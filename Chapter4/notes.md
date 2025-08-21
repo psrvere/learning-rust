@@ -95,3 +95,58 @@ println!("s1: {s1}") // this will throw error: borrow of moved value: s1
 This is similar to concept of `shallow copy` in other programming languages but with a twist - Rust also invalidates the first variable. It is called `a move` i.e. s1 was moved into s2.
 
 There is an implied design choice here: Rust will never automatically create "deep" copies of your data i.e. any automatic copy can be assumed to be inexpensive in runtime.
+
+2. Variable and Data Interacting with Clone
+- `s1.clone()` will "deep" copy s1 to s2, i.e. it will copy both stack and heap memory of s1. 
+
+3. Stack only data with Copy
+If a type implements the `Copy` trait, variables that use it do not move but rather are trvially copied, making them still valid after assignment to another variable.
+
+Q. What types implement `Copy` trait?
+All simple data types
+- integers
+- boolean
+- floating point
+- character
+- tuples (if they contain types that implement Copy)
+
+It is because of this Copy trait that when we copy integer x (in above example) into integer y, x is still valid. 
+
+## Ownership and Functions
+- Passing a variable to function will move or copy, just as assignment does
+```rust
+let x = 1;
+do_something_with_x(x) // since x is integer, a copy operation is made
+// x is still valid here
+
+let y = String::from("hello");
+do_something_with_y(y) // y is moved to the function's parameter
+// ys is not valid here
+```
+
+Q. So how do I use the value of y without transferring ownership?
+
+## Reference and Borrowing
+A reference is like a pointer. It's an address we can follow to access the data but the data is owned by other variable. Unlike pointer, a reference is guaranteed to point to a valid value of a particular type for the life of that reference.
+
+Reference can be passed with ampersand `let s2 = &s1`. s1 is a refence which has a pointer which points to the pointer of s1 which points to the data in heap.
+
+The opposite of referencing is dereferencing which is accomplished with dereferencing operator `*`
+
+```rust
+fn calculate_length(s: &String) -> usize {} // reference is declared with & (Go uses *)
+```
+
+The action of creating a reference is called "borrowing"
+
+Q. Can we modify something we borrowd?
+No, borrowing is read only (immutable)
+```rust
+let s1 = String::from("hello");
+let s2 = &s1;
+s2.push_str(", world"); // this will throw error: can not borrow `*s2` as mutable
+```
+
+But we can define mutable reference
+
+## Mutable References
