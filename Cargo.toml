@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "Chapter1/hello_cargo",
+    "Chapter1/hello_world",
+    "Chapter3/examples"
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Prateek Singh Rathore <prateek.singh.rathore@gmail.com"]
+description = "Learning Rust projects"
+license = "MIT"

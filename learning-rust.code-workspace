@@ -1,0 +1,20 @@
+{
+    "folders": [
+        {
+            "name": "Chapter1 - hello_cargo",
+            "path": "./Chapter1/hello_cargo"
+        },
+        {
+            "name": "Chapter1 - hello_world",
+            "path": "./Chapter1/hello_world"
+        },
+        {
+            "name": "Chapter3 - examples",
+            "path": "./Chapter3/examples"
+        }
+    ],
+    "settings": {
+        "rust-analyzer.cargo.buildScripts.enable": true,
+        "rust-analyzer.procMacro.enable": true
+    }
+}
