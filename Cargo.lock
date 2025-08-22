@@ -7,6 +7,10 @@ name = "Chapter4"
 version = "0.1.0"
 
 [[package]]
+name = "Chapter5"
+version = "0.1.0"
+
+[[package]]
 name = "examples"
 version = "0.1.0"
 
