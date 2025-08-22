@@ -100,7 +100,7 @@ There is an implied design choice here: Rust will never automatically create "de
 - `s1.clone()` will "deep" copy s1 to s2, i.e. it will copy both stack and heap memory of s1. 
 
 3. Stack only data with Copy
-If a type implements the `Copy` trait, variables that use it do not move but rather are trvially copied, making them still valid after assignment to another variable.
+If a type implements the `Copy` trait, variables that use it do not move but rather are trivially copied, making them still valid after assignment to another variable.
 
 Q. What types implement `Copy` trait?
 All simple data types
@@ -121,7 +121,7 @@ do_something_with_x(x) // since x is integer, a copy operation is made
 
 let y = String::from("hello");
 do_something_with_y(y) // y is moved to the function's parameter
-// ys is not valid here
+// y is not valid here
 ```
 
 Q. So how do I use the value of y without transferring ownership?
@@ -129,7 +129,7 @@ Q. So how do I use the value of y without transferring ownership?
 ## Reference and Borrowing
 A reference is like a pointer. It's an address we can follow to access the data but the data is owned by other variable. Unlike pointer, a reference is guaranteed to point to a valid value of a particular type for the life of that reference.
 
-Reference can be passed with ampersand `let s2 = &s1`. s1 is a refence which has a pointer which points to the pointer of s1 which points to the data in heap.
+Reference can be passed with ampersand `let s2 = &s1`. s2 is a reference which has a pointer which points to the pointer of s1 which points to the data in heap.
 
 The opposite of referencing is dereferencing which is accomplished with dereferencing operator `*`
 
@@ -139,14 +139,32 @@ fn calculate_length(s: &String) -> usize {} // reference is declared with & (Go 
 
 The action of creating a reference is called "borrowing"
 
-Q. Can we modify something we borrowd?
+Q. Can we modify something we borrowed?
 No, borrowing is read only (immutable)
 ```rust
 let s1 = String::from("hello");
 let s2 = &s1;
-s2.push_str(", world"); // this will throw error: can not borrow `*s2` as mutable
+s2.push_str(", world"); // this will throw error: cannot borrow `*s2` as mutable
 ```
 
 But we can define mutable reference
 
 ## Mutable References
+- if you have a mutable reference to a value, you can have no other references to that value. The benefit of this restriction is that Rust can prevent data races at compile time
+
+Q. What is a data race?
+A data race is similar to a race condition. It happens when the following three things happen together:
+- two or more pointers access the same data at the same time
+- at least one of the pointers is used to write to the data
+- there is no mechanism being used to synchronize access to the data
+Rust refuses to compile code with data races.
+
+If we have a immutable reference to a mutable variable, we then can't create a mutable reference in the same scope. The design choice is because the users of immutable reference don't expect the value to suddenly change. Once those values are used at least once then we can create mutable reference. Multiple immutable references are okay for a mutable or immutable variable
+
+## The Slice Type
+See `first_word.rs` file to understand one of the problem that this type solves
+
+A string slice is a reference to part of a String.
+
+Q. In first_word example why is returning a slice safer?
+Because the Rust compiler will ensure that references in the original String remain valid! If we tried to modify the original string say `s.clear()`, we will get compilation error: cannot borrow s as immutable because it is also borrowed as immutable.
