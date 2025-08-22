@@ -1,1 +1,1 @@
-I started learning Rust using the Book titled `The Rust Programming Language`. This repo has the projects and notes from reading this book.
+I started learning Rust using the Book titled `The Rust Programming Language`. This repo has the projects and notes from reading this book. These notes are in no way a complete reflection of the book or my learning. I wrote what I felt like writing and a lot of the time I just scribbled/coded on the side discarding it all together, knowing it will come back to me when I need it.
