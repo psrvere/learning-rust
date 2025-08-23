@@ -1,3 +1,4 @@
+mod rectangle;
 fn main() {
-    println!("Hello, world!");
+    rectangle::calculate_area()
 }
