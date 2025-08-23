@@ -1,3 +1,7 @@
+mod ip;
+
 fn main() {
-    println!("Hello, world!");
+    ip::enum_and_struct();
+    ip::enum_only();
+    ip::enum_only_v2();
 }
