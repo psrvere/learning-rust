@@ -4,6 +4,29 @@ struct Rectangle {
     height: u32,
 }
 
+// defining methods on Rectangle
+// Self (with uppercase S) is type alias for the struct type i.e. Self = Rectangle
+// self (with lowercase s) is parameter name. It represents the instance being called on
+// &self is reference to the instance
+// other self patterns:
+// area(self)
+// area(&mut self)
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    // we can define a method with same name as a struct field
+    fn width(&self) -> bool {
+        self.width > 0
+    }
+
+    // another method to check if self Rectangle can hold another Rectangle
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+
 pub fn calculate_area() {
     let scale = 2;
     let rect1 = Rectangle {
@@ -11,7 +34,32 @@ pub fn calculate_area() {
         // as assigning 60 value to width
         height: 80
     };
-    println!("area: {}", area(&rect1));
+
+    let rect2 = Rectangle {
+        width: 10,
+        height: 20
+    };
+
+    // new implementation using methods
+    println!("area: {}", rect1.area());
+
+    // this is same as above line. How come?
+    // Rust has a feature called automatic referencing and automatic dereferencing
+    // When we call a method, Rust automatically adds in &, &mut or * so objects matches
+    // the signature of the method
+    // Rust makes borrowing implicit for method receivers - this makes ownership ergonomic in practice!
+    println!("area: {}", &rect1.area());
+
+    // when we use width without (), Rust knows it's a field
+    println!("width field: {}", rect1.width);
+
+    // when we use width with (), Rust looks for a method
+    println!("width method: {}", rect1.width());
+
+    println!("can rect1 hold rect2?: {}", rect1.can_hold(&rect2));
+
+    // older implementation without using methods
+    // println!("area: {}", area(&rect1));
     // Note: &rect1 is a borrowed struct
     // Accessing its fields in area function does not move the fields values i.e. struct
     // still has ownership of these fields
@@ -41,6 +89,6 @@ pub fn calculate_area() {
     // reference to rect1
 }
 
-fn area(rect: &Rectangle) -> u32 {
-    rect.width * rect.height
-}
+// fn area(rect: &Rectangle) -> u32 {
+//     rect.width * rect.height
+// }
