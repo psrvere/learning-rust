@@ -3,7 +3,7 @@ members = [
     "Chapter1/hello_cargo",
     "Chapter1/hello_world",
     "Chapter3/examples"
-, "Chapter4", "Chapter5"]
+, "Chapter4", "Chapter5", "Chapter6"]
 
 [workspace.package]
 version = "0.1.0"
