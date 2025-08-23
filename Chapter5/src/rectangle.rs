@@ -12,6 +12,17 @@ struct Rectangle {
 // area(self)
 // area(&mut self)
 impl Rectangle {
+    // square is not a method as it does not have self as the first parameter
+    // String::from() is another example of a function which is not a method
+    // These are often used for constructors and often called new. new is not a reserved name in Rust
+    // this needs to be called like this Rectangle::square
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
+
     fn area(&self) -> u32 {
         self.width * self.height
     }
@@ -26,6 +37,10 @@ impl Rectangle {
         self.width > other.width && self.height > other.height
     }
 }
+/*
+All functions defined in impl block are called Associated Functions
+because they are associated with the type on which mehtods are defined
+*/
 
 pub fn calculate_area() {
     let scale = 2;
@@ -39,6 +54,9 @@ pub fn calculate_area() {
         width: 10,
         height: 20
     };
+
+    let sq = Rectangle::square(30);
+    println!("square: {:#?}", sq);
 
     // new implementation using methods
     println!("area: {}", rect1.area());
