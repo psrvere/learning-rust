@@ -15,7 +15,7 @@ impl Rectangle {
     // square is not a method as it does not have self as the first parameter
     // String::from() is another example of a function which is not a method
     // These are often used for constructors and often called new. new is not a reserved name in Rust
-    // this needs to be called like this Rectangle::square
+    // this needs to be called like this Rectangle::square()
     fn square(size: u32) -> Self {
         Self {
             width: size,
