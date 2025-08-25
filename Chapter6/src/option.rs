@@ -12,7 +12,7 @@ pub fn option() {
     let some_char = Some('e');
     dbg!(some_char);
 
-    let absent_number: Option<i32> = None; // Type needs to be annotated as compiler can't infer it
+    let absent_number: Option<i32> = None; // Type needs to be annotated as compiler can't infer it from value
     dbg!(absent_number);
 
     // Option<T> and <T> are two different types for Rust
@@ -37,5 +37,62 @@ pub fn value_in_cents(coin: Coin) -> u8{
         Coin::Nickel => 5,
         Coin::Dime => 10,
         Coin::Quarter => 25,
+    }
+}
+
+// Patterns that bind to Values
+
+#[derive(Debug)]
+pub enum UsState {
+    Alabama,
+    Alaska,
+    // only adding sample states
+}
+
+pub enum CoinUsState {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+pub fn value_in_cents2(coin: CoinUsState) -> u8 {
+    match coin {
+        CoinUsState::Penny => 1, 
+        CoinUsState::Nickel => 5,
+        CoinUsState::Dime => 10,
+        CoinUsState::Quarter(state) => {
+            println!("State Quarter from {:?}!", state);
+            25
+        }
+    }
+}
+
+// Matching with Option<T>
+
+pub fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i+1),
+    }
+}
+
+// Catch-all patterns
+
+pub fn catch_all() {
+    let dice_roll = 9;
+    match dice_roll {
+        3 => (), // using () as placeholder for a function
+        7 => (),
+        other => (), // will handle all other cases
+    }
+}
+
+pub fn catch_all2() {
+    let dice_roll = 3;
+    match dice_roll {
+        3 => (),
+        7 => (),
+        _ => (), // we don't want to use the value in catch_all pattern
     }
 }
