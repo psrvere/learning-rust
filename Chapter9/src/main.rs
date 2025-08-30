@@ -1,3 +1,5 @@
+mod recoverable;
+
 fn main() {
-    println!("Hello, world!");
+    recoverable::recoverable();
 }
