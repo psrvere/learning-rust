@@ -7,6 +7,7 @@ pub fn recoverable() {
     println!("Result 2: {:?}", read_username_from_file2());
     println!("Result 3: {:?}", read_username_from_file3());
     println!("Result 4: {:?}", read_username_from_file4());
+    println!("last char: {:?}", last_char("Hi I am Sam"));
 }
 
 fn recoverable_error_match() {
@@ -90,4 +91,8 @@ fn read_username_from_file3() -> Result<String, io::Error> {
 // even shorter version 
 fn read_username_from_file4() -> Result<String, io::Error> {
     fs::read_to_string("user.txt")
+}
+
+fn last_char(text: &str) -> Option<char> {
+    text.lines().next()?.chars().last()
 }
