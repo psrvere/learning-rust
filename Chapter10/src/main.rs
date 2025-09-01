@@ -3,6 +3,8 @@ use trait_example::{Summary1, Tweet1, NewsArticle1, NewsArticle2, notify1, notif
 
 mod generics;
 mod trait_example;
+mod lifetimes;
+
 fn main() {
     generics::generics();
     summarize_tweet();
