@@ -1,0 +1,1 @@
+The chapter was straight forward. Didn't feel the need to make notes.
