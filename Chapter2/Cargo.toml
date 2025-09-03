@@ -1,0 +1,10 @@
+[package]
+name = "Chapter2"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+license.workspace = true
+
+[dependencies]
+rand = "0.8.5"
