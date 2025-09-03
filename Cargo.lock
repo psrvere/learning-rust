@@ -7,6 +7,10 @@ name = "Chapter10"
 version = "0.1.0"
 
 [[package]]
+name = "Chapter12"
+version = "0.1.0"
+
+[[package]]
 name = "Chapter2"
 version = "0.1.0"
 dependencies = [
