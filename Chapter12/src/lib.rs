@@ -44,24 +44,42 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>>{
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-    results
+    // Older implementations: It produced mutable intermediate result
+    // Which can be avoided in the newer implementation
+    // Here results get built up incrementally
+    // Hence we will have to worry about concurrent access to this function
+
+    // let mut results = Vec::new();
+    // for line in contents.lines() {
+    //     if line.contains(query) {
+    //         results.push(line);
+    //     }
+    // }
+    // results
+
+    // New implementation using iterators
+    contents.lines().filter(|line| line.contains(query)).collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    // Older implementation
+
+    // let query = query.to_lowercase();
+    // let mut results = Vec::new();
+    // for line in contents.lines() {
+    //     if line.to_lowercase().contains(&query) {
+    //         results.push(line);
+    //     }
+    // }
+    // results
+
+    // New Implementation using iterators
+
+    // to_lowercase returns owned String because it might need to allocate new memory
+    // contains takes &str to avoid taking ownership, hence we pass &query here
+    // Rust does dereference coersion to convert &String to &str
     let query = query.to_lowercase();
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.to_lowercase().contains(&query) {
-            results.push(line);
-        }
-    }
-    results
+    contents.lines().filter(|line| line.to_lowercase().contains(&query)).collect()
 }
 
 #[cfg(test)]
