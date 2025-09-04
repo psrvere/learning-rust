@@ -9,13 +9,21 @@ pub struct Config {
 
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments")
-        }
+    // impl Iterator implies that args can be of any type that implements the Iterator type
+    // and returns string items
+    pub fn new(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        args.next(); // ignoring first value which is name of program
 
-        let query = args[1].clone();
-        let file_path = args[2].clone();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Did not get query string"),
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Did not get file path string"),
+        };
+
         let ignore_case = env::var("IGNORE_CASE").is_ok();
         Ok(Config{query, file_path, ignore_case})
     }
