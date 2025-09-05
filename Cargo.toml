@@ -1,9 +1,19 @@
 [workspace]
 members = [
     "Chapter1/hello_cargo",
-    "Chapter1/hello_world", "Chapter10", "Chapter12", "Chapter13", "Chapter2",
+    "Chapter1/hello_world", 
+    "Chapter2",
     "Chapter3/examples"
-, "Chapter4", "Chapter5", "Chapter6", "Chapter7/restaurant", "Chapter8", "Chapter9"]
+    "Chapter4",
+    "Chapter5",
+    "Chapter6",
+    "Chapter7/restaurant",
+    "Chapter8",
+    "Chapter9"
+    "Chapter10", 
+    "Chapter12", 
+    "Chapter13",
+]
 
 [workspace.package]
 version = "0.1.0"
