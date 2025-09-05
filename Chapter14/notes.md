@@ -1,0 +1,1 @@
+This chapter was on using cargo command and workspaces. No notes from this chapter.
