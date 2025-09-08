@@ -4,6 +4,7 @@ pub fn examples() {
     simple_pointer();
     smart_pointer();
     my_box();
+    custom_smart_pointer();
 }
 
 // The value of b is allocated on heap
@@ -105,5 +106,34 @@ fn my_box() {
     // to the function like this:
     hello(&(*name)[..]);
     // *name = String
+    // Since String doesn't implement copy trait, *name moves String out of MyBox
+    // i.e. name is not invalid. This string is stored in a temporary variable
     // &String[..] = &str
+    // Here hello gets a borrowed reference to string value
+    // and the String is destroyed after the function call
+}
+    
+fn custom_smart_pointer() {
+    struct CustomSmartPointer {
+        data: String,
+    }
+
+    // Rust doesn't allow us to call drop function manually
+    impl Drop for CustomSmartPointer {
+        fn drop(&mut self) {
+            println!("Dropping CustomerSmartPointer with data `{}`", self.data);
+        }
+    }
+
+    let c = CustomSmartPointer{
+        data: String::from("some data"),
+    };
+
+    // But we can use std::mem::drop function which is part of prelude
+    drop(c); // manually force dropping variable
+
+    let d = CustomSmartPointer{
+        data: String::from("some more data"),
+    };
+    println!("Custom pointers created");
 }
