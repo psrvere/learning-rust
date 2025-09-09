@@ -1,13 +1,25 @@
+use std::cell::RefCell;
+
+// The Messernger design ensured safety
+// self is immutable so that it is not accidently changed
+// Using &self allows us to have multiple immutable references
+// Using &mut self allows us to have only one mutable reference
+// In this context, using &self is a better design
 pub trait Messenger {
     fn send(&self, msg: &str);
 }
 
+// Here T must implement Messenger trait
+// T: Messenger also implies that this struct can only be created by types
+// which implement Messenger trait
 pub struct LimitTracker<'a, T: Messenger> {
     messenger: &'a T,
     value: usize,
     max: usize,
 }
 
+// Here T: Messenger implies this implementataion only works for the type
+// that implements Messenger trait
 impl<'a, T> LimitTracker<'a, T>
 where
     T: Messenger,
@@ -53,6 +65,14 @@ mod tests {
             // This will show Error - uncomment and check.
             // cannot borrow `self.sent_messages` as mutable, as it is behind a `&` reference
             // `self` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+            // What this error means is that since &self is immutable reference
+            // &self.sent_messages return an immutable referecne to Vec
+            // hence push method can not work on it
+            // Note: we have already established above why &self is a better design 
+            // over &mut self
+
+            // This is a situation where interior mutability can help!
+            // See second example below
 
             // self.sent_messages.push(String::from(message));
         }
@@ -104,4 +124,43 @@ mod tests {
         assert_eq!(mock_messenger.sent_messages.borrow().len(), 1)
     }
 
+    /* Keeping track of borrows at Runtime with RefCell<T>
+        borrow method returns the smart pointer type Ref<T>
+        borrow_mut method returns the smart pointer type RefMut<T>
+        Both types implement Deref, hence we can treat them like regular references
+        RefCell<T> keeps count of these references and ensures many immutable borrows
+        OR only one mutable borrow at a given time
+        Violating this rule, will make program panic at runtime
+    */
+}
+
+pub fn examples() {
+    multiple_owners_mutable();
+}
+
+// Allowing multiple owners of mutable data with Rc<T> and RefCell<T>
+fn multiple_owners_mutable() {
+    use std::rc::Rc;
+    use List::{Cons, Nil};
+
+    #[derive(Debug)]
+    enum List {
+        Cons(Rc<RefCell<i32>>, Rc<List>),
+        Nil,
+    }
+
+    let value = Rc::new(RefCell::new(5));
+    
+    // We need to clone value so both a and value have ownership of the inner 5 value
+    // rather that transferring ownership from value to a or having a borow from value
+    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+
+    let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+
+    *value.borrow_mut() += 10;
+
+    println!("a after = {:?}", a);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
 }

@@ -5,4 +5,5 @@ mod refcell_examples;
 fn main() {
     box_examples::examples();
     rc_examples::examples();
+    refcell_examples::examples();
 }
