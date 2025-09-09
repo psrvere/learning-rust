@@ -1,3 +1,5 @@
+mod thread;
+
 fn main() {
-    println!("Hello, world!");
+    thread::examples();
 }
