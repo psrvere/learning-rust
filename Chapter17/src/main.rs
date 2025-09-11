@@ -1,3 +1,4 @@
+mod encapsulation;
 fn main() {
-    println!("Hello, world!");
+    
 }
