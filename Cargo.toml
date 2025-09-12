@@ -16,6 +16,7 @@ members = [
     "Chapter15",
     "Chapter16",
     "Chapter17",
+    "Chapter18",
 ]
 
 [workspace.package]
