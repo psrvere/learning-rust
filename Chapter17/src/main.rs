@@ -1,6 +1,7 @@
 mod encapsulation;
-mod inheritence;
+mod inheritance;
+mod state_pattern;
 
 fn main() {
-    
+    state_pattern::blog_example();
 }
